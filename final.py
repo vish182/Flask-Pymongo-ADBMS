@@ -7,6 +7,7 @@ Created on Sun Nov 14 18:44:58 2021
 
 import numpy as np
 import pandas as pd
+'''
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -19,7 +20,9 @@ sns.set_style('darkgrid')
 from matplotlib import pyplot
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
+'''
 from sklearn.linear_model import LinearRegression,LogisticRegression
+'''
 from sklearn.tree import DecisionTreeRegressor,DecisionTreeClassifier
 from sklearn.ensemble import RandomForestRegressor,RandomForestClassifier
 from sklearn.ensemble import GradientBoostingRegressor,GradientBoostingClassifier
@@ -30,9 +33,10 @@ from sklearn.svm import SVR,SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score,mean_squared_error
-
+'''
 
 df= pd.read_csv("Admission_Predict.csv")
+'''
 print(type(df))
 print(df.head())
 print(df.shape)
@@ -216,14 +220,16 @@ x_ax=cla_pred
 
 sns.barplot(x=x_ax,y=y_ax,linewidth=1.5,edgecolor="0.8")
 plt.xlabel('Accuracy')
-
+'''
+x = df.iloc[:, 1:8]
+y = df.iloc[:, -1]
 
 linear_regressor = LinearRegression()
-linear_regressor.fit(X_train,y_train)
-predictions2 = linear_regressor.predict(X_test)
+linear_regressor.fit(x,y)
 
 import pickle 
 
 pickle.dump(linear_regressor,open('linear_regressor.pkl','wb'))
 
 model = pickle.load(open('linear_regressor.pkl','rb'))
+
