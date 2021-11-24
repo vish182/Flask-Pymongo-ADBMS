@@ -55,13 +55,13 @@ mongo = PyMongo(app)
 
 
 
-@app.route('/add', methods=["POST"])
+@app.route('/addUser', methods=["POST"])
 def addUser():
     _json = request.json
-    print(_json["name"])
-    print("please")
+    print(_json)
+    print("please signup" )
 
-    #id = mongo.db.student_data.insert_one({"gre_score": _json["name"], "toefl_score": _json["age"]})
+    id = mongo.db.users.insert_one(_json)
 
     #print(id)
 
@@ -69,18 +69,34 @@ def addUser():
 
     return res
 
+@app.route('/getUser', methods=["POST"])
+def getUser():
+    _json = request.json
+    print(_json)
+    print("please sigIN" )
+
+    user = mongo.db.users.find_one({"email": _json["email"]})
+
+    print(user)
+    res = jsonify("failed")
+    if _json["password"] == user["password"]:
+        res = jsonify("success")
+    
+    
+    return res
+
 # to use the predict button in the web app
-@app.route('/predict', methods=['POST'])
-def predict():
-    # For rendering results on on HTML GUI
-    int_features = [float(x) for x in request.form.values()]
-    final_features = [np.array(int_features)]
+# @app.route('/predict', methods=['POST'])
+# def predict():
+#     # For rendering results on on HTML GUI
+#     int_features = [float(x) for x in request.form.values()]
+#     final_features = [np.array(int_features)]
 
-    prediction = model.predict(final_features)
+#     prediction = model.predict(final_features)
 
-    output = round(prediction[0], 2)
+#     output = round(prediction[0], 2)
 
-    return render_template('index.html', prediction_text='Chance of Admission = {}'.format(output))
+#     return render_template('index.html', prediction_text='Chance of Admission = {}'.format(output))
 
 def extractAttributes(doc):
     d = {"gre": int(doc["gre"]), "toefl": int(doc["toefl"]), "uniRating": int(doc["uniRating"]), "sop": int(doc["sop"]), "lor": int(doc["lor"]), "research": bool(doc["research"]), "cgpa": float(doc["cgpa"])}
